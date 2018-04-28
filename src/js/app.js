@@ -68,6 +68,14 @@ App = {
       }
     });
 
+    //Check Ending Account
+    var endAcc = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
+    if (web3.eth.accounts == endAcc){
+      $("#endButton").show();
+    }else{
+      $("#endButton").hide();
+    }
+
     // Load contract data
     App.contracts.Election.deployed().then(function(instance) {
       electionInstance = instance;
@@ -118,7 +126,21 @@ App = {
     }).catch(function(err) {
       console.error(err);
     });
+  },
+
+  endVote: function(){
+
+    var hi= confirm("Do you really want to ending vote?");
+    if (hi== true){
+        alert("End Vote.");
+        $("#formGroup").hide();
+        $("#endButton").hide();
+    }else{
+        alert("Continue your Vote.");
+    }
+    
   }
+
 };
 
 $(function() {
