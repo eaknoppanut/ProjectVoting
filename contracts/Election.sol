@@ -15,11 +15,15 @@ contract Election {
     mapping(uint => Candidate) public candidates;
     // Store Candidates Count
     uint public candidatesCount;
+    // Checking boolean that you still can vote
+    bool endVote;
 
     // voted event
     event votedEvent (
         uint indexed _candidateId
     );
+    
+    event ElectionResult(string name, uint voteCount);
 
     function Election () public {
         addCandidate("Candidate 1");
@@ -32,6 +36,9 @@ contract Election {
     }
 
     function vote (uint _candidateId) public {
+         // reuire that the vote is still on time
+        require(endVote == false);
+        
         // require that they haven't voted before
         require(!voters[msg.sender]);
 
@@ -46,5 +53,13 @@ contract Election {
 
         // trigger voted event
         votedEvent(_candidateId);
+    }
+    
+  function end() public{
+       for(uint i = 1; i <= candidatesCount; i++){
+            ElectionResult(candidates[i].name, candidates[i].voteCount);
+        }
+        //Set endVote from "False" to "True" so no one can vote anymore.
+        endVote = true;
     }
 }
